@@ -103,4 +103,9 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+#nodejs
+
+node_modules
+node_modules/*
+
 original_data.xlsx
