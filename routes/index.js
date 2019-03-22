@@ -9,8 +9,9 @@ db = new sqlite3.Database('./database.sqlite', sqlite3.OPEN_READONLY, (err) => {
   }
 });
 
-let sql = "SELECT * FROM game_runs WHERE event = 'SGDQ' AND year >= '2016'";
+let sql = "SELECT * FROM game_runs WHERE event = 'AGDQ' AND year = '2019'";
 dbdata = [];
+dbevents = [];
 
 db.all(sql, [], (err, rows) => {
   if (err) {
@@ -19,22 +20,63 @@ db.all(sql, [], (err, rows) => {
   dbdata = rows;
 });
 
-db.close((err) => {
+sql = "SELECT DISTINCT event, year FROM runs ORDER BY year, event";
+dbdata = [];
+
+db.all(sql, [], (err, rows) => {
   if (err) {
-    return console.error(err.message);
+    throw err;
   }
-  console.log('Close the database connection.');
+  dbevents = rows;
 });
+
+
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
   res.render(
     'index',
     {
-      title: 'Express',
-      data: dbdata
+      title: 'GDQ Database',
+      dbdata: dbdata,
+      dbevents: dbevents
     }
   );
 });
+
+var homeJson = { 'api' : 'Homepage'};
+
+router.get('/api', function (req, res, next) {
+  res.json(homeJson);
+});
+
+
+router.get('/api/:event/:year', function (req, res, next) {
+  let eventsql = "SELECT * FROM game_runs WHERE event = '" + req.params.event + "' AND year = '" + req.params.year + "'";
+  var params = { 1: req.params.event, 2: req.params.year};
+
+  db.all(eventsql, [], (err, rows) => {
+    if (err) {
+      throw err;
+    
+    }
+    if (rows.length > 0) {
+      res.json(rows);
+    } else {
+      res.json({'error': 'No data found'});
+    }
+  });
+
+  
+});
+  
+
+// db.close((err) => {
+//   if (err) {
+//     return console.error(err.message);
+//   }
+//   console.log('Close the database connection.');
+// });
+
 
 module.exports = router;

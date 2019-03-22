@@ -2,19 +2,21 @@ doctype html
 html
   head
     title= title
+    link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T', crossorigin='anonymous')
     link(rel='stylesheet', href='/stylesheets/style.css')
+
   body
-    header GDQ Database Query
-    
+    header.h1 GDQ Database Query Thing
+        
     block content
 
-    footer 
-      div.footer Created by 
-        a(href='https://github.com/sillypears') sillypears
+    footer.h3
+      div.footer Project on 
+        a(href='https://github.com/sillypears/gdq-database/', target="_blank"): img(src='https://www.vectorlogo.zone/logos/github/github-icon.svg' width='56px' height='56px')
       div.footer Powered by 
-        a(href='https://expressjs.com'): img(src='https://www.vectorlogo.zone/logos/expressjs/expressjs-icon.svg' width='20px' height='20px')
+        a(href='https://expressjs.com', target="_blank"): img(src='https://www.vectorlogo.zone/logos/expressjs/expressjs-icon.svg' width='56px' height='56px')
       div.footer Powered by 
-        a(href='https://nodejs.org'): img(src='https://www.vectorlogo.zone/logos/nodejs/nodejs-icon.svg' width='20px' height='20px')
+        a(href='https://nodejs.org', target="_blank"): img(src='https://www.vectorlogo.zone/logos/nodejs/nodejs-icon.svg' width='56px' height='56px')
 
       
       

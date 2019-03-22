@@ -1,10 +1,20 @@
 extends layout
 
 block content
-  table(border=1)
-    each val in data
+  div 
+    select
+      for val in dbevents
+        option=val.event + " " + val.year
+  div
+    table.table.center(align="center")
       tr
-        td=val.Game
-        td=val.Platform
-        td=val.Event
-        td=val.Year
+        th='Game'
+        th='Platform'
+        th='Event'
+        th='Year'
+      each val in dbdata
+        tr
+          td=val.Game
+          td=val.Platform
+          td=val.Event
+          td=val.Year
