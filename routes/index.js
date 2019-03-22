@@ -63,7 +63,12 @@ router.get('/api/:event/:year', function (req, res, next) {
     if (rows.length > 0) {
       res.json(rows);
     } else {
-      res.json({'error': 'No data found'});
+      res.json({
+        'error': {
+          'status_code': 2,
+          'message': 'No data found'
+        }
+      });
     }
   });
 
