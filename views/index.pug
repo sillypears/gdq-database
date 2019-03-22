@@ -1,20 +1,22 @@
 extends layout
 
 block content
-  div 
-    select(align="center", onchange="selectEvent(this.value);")
-      for val in dbevents
-        option=val.event + " " + val.year
-  div#tableData
-    //- table.table.center(align="center")
-    //-   tr
-    //-     th='Game'
-    //-     th='Platform'
-    //-     th='Event'
-    //-     th='Year'
-    //-   each val in dbdata
-    //-     tr
-    //-       td=val.Game
-    //-       td=val.Platform
-    //-       td=val.Event
-    //-       td=val.Year
+  section
+    div 
+      select(align="center", onchange="selectEvent(this.value);")
+        for val in dbevents
+          option=val.event + " " + val.year
+  section(height='70%')
+    div#tableData
+      //- table.table.center(align="center")
+      //-   tr
+      //-     th='Game'
+      //-     th='Platform'
+      //-     th='Event'
+      //-     th='Year'
+      //-   each val in dbdata
+      //-     tr
+      //-       td=val.Game
+      //-       td=val.Platform
+      //-       td=val.Event
+      //-       td=val.Year
