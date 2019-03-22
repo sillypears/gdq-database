@@ -2,10 +2,14 @@ extends layout
 
 block content
   section
-    div 
-      select(align="center", onchange="selectEvent(this.value);")
-        for val in dbevents
-          option=val.event + " " + val.year
+    div.row
+      div.h1.col-md-9 GDQ Database Querizer
+      div.col-md-3
+        div.select-style
+          select(align="center", onchange="selectEvent(this.value);")
+            option(disabled, selected)="Select your event"
+            for val in dbevents
+              option=val.event + " " + val.year
   section(height='70%')
     div#tableData
       //- table.table.center(align="center")

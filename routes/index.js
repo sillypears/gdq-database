@@ -37,7 +37,7 @@ router.get('/', function (req, res, next) {
   res.render(
     'index',
     {
-      title: 'GDQ Database',
+      title: 'GDQ Database Querier',
       dbdata: dbdata,
       dbevents: dbevents
     }
