@@ -17,6 +17,7 @@ function selectEvent (eventData) {
         data.forEach(element => {
             tO = tO + "<tr>"
             tO = tO + "<td>"+element.Game+"</td>"
+            tO = tO + "<td>"+element.Players+"</td>"
             tO = tO + "<td>"+element.Platform+"</td>"
             tO = tO + "<td>"+element.StartTime+"</td>"
             //tO = tO + "<td>"+element.Year+"</td>"
