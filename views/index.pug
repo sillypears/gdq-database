@@ -1,26 +1,14 @@
 extends layout
 
 block content
-  section
+  div.container-fluid
     div.row
-      div.h1.col-md-9 GDQ Database Querizer
-      div.col-md-3
-        div.select-style
-          select(align="center", onchange="selectEvent(this.value);")
+      div.h1.col-9 GDQ Database Querizer
+      div.col-3.middle-vert
+        div.select-style.middle-vert
+          select.middle-vert(align="center", onchange="selectEvent(this.value);")
             option(disabled, selected)="Select your event"
             for val in dbevents
               option=val.event + " " + val.year
-  section(height='70%')
+  section
     div#tableData
-      //- table.table.center(align="center")
-      //-   tr
-      //-     th='Game'
-      //-     th='Platform'
-      //-     th='Event'
-      //-     th='Year'
-      //-   each val in dbdata
-      //-     tr
-      //-       td=val.Game
-      //-       td=val.Platform
-      //-       td=val.Event
-      //-       td=val.Year

@@ -6,16 +6,32 @@ html
     link(rel='stylesheet', href='/stylesheets/style.css')
 
   body
-            
+    nav.navbar.fixed-top.navbar-expand-lg.navbar-dark.bg-dark
+      a.navbar-brand(href='#')
+        img(src='/images/brand.png', width='28px', height='28px', alt='')
+      button.navbar-toggler(type="button", data-toggle="collapse", data-target="#navbarSupportedContent", aria-controls="navbarSupportedContent", aria-expanded="false", aria-label="Toggle navigation")
+        span.navbar-toggler-icon
+      div.collapse.navbar-collapse#navbarSupportedContent
+        ul.navbar-nav.mr-auto
+
+          li.nav-item.dropdown
+            a.nav-link.dropdown-toggle#navbarDropdown(href="#", role="button", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false") GDQ Links
+            div.dropdown-menu(aria-labeledby="navbarDropdown")
+              a.dropdown-item(href="https://gamesdonequick.com", target="_blank") GDQ Homepage
+              a.dropdown-item(href="https://twitch.tv/gamesdonequick", target="_blank") GDQ Twitch
+
     block content
 
-    footer.text-muted
+    footer.text-muted.navbar-dark.bg-dark.fixed-bottom
       div Project on 
         a(href='https://github.com/sillypears/gdq-database/', target="_blank"): img(src='https://www.vectorlogo.zone/logos/github/github-icon.svg' width='32px' height='32px')
-      div Powered by 
-        a(href='https://expressjs.com', target="_blank"): img(src='https://www.vectorlogo.zone/logos/expressjs/expressjs-icon.svg' width='32px' height='32px')
-        a(href='https://nodejs.org', target="_blank"): img(src='https://www.vectorlogo.zone/logos/nodejs/nodejs-icon.svg' width='32px' height='32px')
-
+        | Powered by 
+        a(href='https://nodejs.org', target="_blank"): img(src='https://www.vectorlogo.zone/logos/nodejs/nodejs-icon.svg', width='32px', height='32px')
+        a(href='https://expressjs.com', target="_blank"): img(src='https://www.vectorlogo.zone/logos/expressjs/expressjs-ar21.svg', height='32px', style='background-color:#BBBBBB')
+        
+      div This site is not affiliated with Games Done Quick or any of their sponsors :)
     
     script(src='https://code.jquery.com/jquery-3.3.1.slim.min.js')
-    script(src='javascript/index.js')
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js")
+    script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js")
+    script(src='/javascript/index.js')

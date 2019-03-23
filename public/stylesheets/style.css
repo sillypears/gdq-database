@@ -1,6 +1,8 @@
 body {
-  padding: 50px;
-  font: 14px Arial, sans-serif;
+  padding: 60px;
+  font: 12px "Helvetica Neue", sans-serif;
+  background: #AAAABB;
+  
 }
 
 a {
@@ -30,7 +32,8 @@ header {
   width: 150px;
   border-radius: 3px;
   overflow: hidden;
-  background: #fafafa url("img/icon-select.png") no-repeat 90% 50%;
+  background: #fafafa url("/images/icon-select.png") no-repeat 90% 50%;
+  
 }
 
 .select-style select {
@@ -45,4 +48,8 @@ header {
 
 .select-style select:focus {
   outline: none;
+}
+
+.middle-vert {
+  vertical-align: middle;
 }
