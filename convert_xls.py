@@ -6,8 +6,8 @@ import xlrd
 from xlrd.sheet import ctype_text
 import sqlite3
 
-xel = "sample_data_2012.xlsx"
-db_file = "db.sqlite3"
+xel = "gdqs.xlsx"
+db_file = "database.sqlite3"
 
 db_players = {}
 db_platforms = {}
