@@ -5,119 +5,160 @@ import sys
 import json
 import sqlite3
 
-j_file = "gdqs.json"
+OFF_EVENTS = {
+    "cgdq": 2010,
+    "gowdq": 2015,
+    "hrdq": 2017,
+    "gdqx": 2018,
+    "jrdq": 2011
+}
+
+j_file = "gdqs_edited.json"
 db_file = "json_database.sqlite3"
 
-db_players = {}
-db_platforms = {}
-db_runs = {}
+db_events = {}
 db_games = {}
+db_genres = {}
+db_platforms = {}
+db_runners = {}
+db_runs = {}
 
 db = sqlite3.connect(db_file)
+
+db_res = db.execute("SELECT name, id FROM events")
+for res in db_res:
+    db_events[res[0]] = int(res[1])   
+
+db_res = db.execute("SELECT name, id FROM games")
+for res in db_res:
+    db_games[res[0]] = int(res[1])
+
+db_res = db.execute("SELECT name, id FROM genres")
+for res in db_res:
+    db_genres[res[0]] = int(res[1])
+
+db_res = db.execute("SELECT name, id FROM platforms")
+for res in db_res:
+    db_platforms[res[0]] = int(res[1])
+
+db_res = db.execute("SELECT name, id FROM runners")
+for res in db_res:
+    db_runners[res[0]] = int(res[1])
+ 
+db_res = db.execute("SELECT run_game_key, id FROM runs")
+for res in db_res:
+    db_runs[res[0]] = int(res[1])
+
 with open(j_file, 'r', encoding='utf8', errors='ignore') as f:
     j_data = json.loads(f.read())
 
-player_list = {}
+runners = {}
 platforms = []
-runs = []
-runs_players = []
+runs = {}
 games = {}
+genres = []
+runs_runners = {}
+for r in j_data:
+    run = j_data[r]
 
-count=0
-games = {}
-for run in j_data:
-    g = j_data[run]["game"]["name"]
-    if games.get(g):
-        games[g] += 1
-    else:
-        games[g] = 1
-for run in j_data:
-    j_data[run]["silly"] = False
+    if run['platform_id'] not in platforms:
+        platforms.append(run['platform_id'])
+    
+    if run['genre_id'] not in genres:
+        genres.append(run['genre_id'])
 
-# for game in sorted(games.keys()):
-    # print("{}: {}".format(game, games[game]))
+    for runner_entry in run["runners"]:
+        runner_id = runner_entry["id"]
+        try:
+            display_name = runner_entry["name"]
+        except:
+            display_name = ""
+        try:
+            twitch = runner_entry["twitch"]
+        except:
+            twitch = ""
+        try:
+            twitter = runner_entry["twitter"]
+        except:
+            twitter = ""
+        try:
+            youtube = runner_entry["youtube"]
+        except:
+            youtube = ""
 
-with open('gdqs_edited.json', 'w') as f:
-    json.dump(j_data, f)
-# for sheet_idx in range(0, book.nsheets):
-#     sheet = book.sheet_by_index(sheet_idx)
-#     rows = sheet.nrows
-#     cols = sheet.ncols
-#     if rows > 1:
-#         headers = sheet.row(0)
-#         for r in range(1, rows):
-#             try:
-#                 name = sheet.cell(r, 0).value.strip()
-#             except:
-#                 print("name broken {}".format(sheet.cell(r, 0).value))
-#                 name = ""
-#             try:
-#                 plat = str(sheet.cell(r, 1).value.strip())
-#             except:
-#                 print("plat broken {}".format(sheet.cell(r, 1).value))
-#                 plat = ""
-#             try:
-#                 players = sheet.cell(r, 2).value.strip().split(',')
-#             except:
-#                 print("player broken {}".format(sheet.cell(r, 2).value))
-#                 player = []
-#             try:
-#                 event = sheet.cell(r, 3).value.strip()
-#             except:
-#                 print("event broken {}".format(sheet.cell(r, 3).value))
-#                 event = ""
-#             try:
-#                 year = int(sheet.cell(r, 4).value)
-#             except Exception as e: 
-#                 print("couldn't convert year")
-#             try:
-#                 s_date = xlrd.xldate.xldate_as_datetime(sheet.cell(r, 5).value, book.datemode)
-#             except:
-#                 print("sdate broken {}".format(sheet.cell(r, 4).value))
-#                 s_date = ""
-#             try:
-#                 e_date = xlrd.xldate.xldate_as_datetime(sheet.cell(r, 6).value, book.datemode)
-#             except:
-#                 print("edate broken {}".format(sheet.cell(r, 6).value))
-#                 e_date = ""
-#             try:
-#                 r_time = (e_date - s_date).total_seconds()
-#             except:
-#                 print("why am i broken time substraction")
-#                 r_time = -1
-            
-#             for player in players:
-#                 if player.strip() in player_list.keys():
-#                     player_list[player.strip()] += 1
-#                 else:
-#                     player_list[player.strip()] = 1
-            
-#             if name.strip() not in games.keys():
-#                 try:
-#                     games[name.strip()] = {"name": name.strip(), "platform": db_platforms[plat.strip()]}
-#                 except Exception as e:
-#                     games["blank"] = {"name": "blank", "platform": -1}
+        runner = {
+            "name": runner_entry["id"],
+            "display_name": display_name,
+            "twitch": twitch,
+            "twitter": twitter,
+            "youtube": youtube
+        }
+        if runner_id not in runners.keys():
+            runners[runner_id] = runner
 
-#             if plat.strip() not in platforms:
-#                 platforms.append(plat.strip())
+        if run["id"] in db_runs.keys():
+            run_id = db_runs[run["id"]]
+            runner_id = db_runners[runner["name"]]
+            runs_runners[run["id"]+runner["name"]] = {"run_id": run_id, "runner_id": runner_id}
 
-#             runs.append([db_games[name], db_platforms[plat], event, year, s_date, e_date, r_time])
-#             runs_players.append(players)
-            
-# for key in sorted(player_list.keys()):
-    # print("INSERT INTO players (name) VALUES (\"{}\");".format(key))
+    if not games.get(run["game"]["id"]):
+        games[run["game"]["id"]] = {
+            "name": run["game"]["name"],
+            "platform": run["game"]["platform"]["id"],
+            "year": run["game"]["year"],
+            "genre": run["game"]["genre"]["id"]
+        }
+    
+    if not runs.get(r):
+        game_id = db_games[run["game_id"]]
+        game_key = run["id"]
+        category = run["category"]
+        race = int(run["race"])
+        event_id = db_events[run["event_id"].split("-")[0]]
+        year = int(OFF_EVENTS[run["event_id"].split("-")[0]]) if run["event_id"].split("-")[0] in OFF_EVENTS.keys() else int(run["event_id"].split("-")[1])
+        duration = run["duration"]
+        start_time = run["start_time"]
+        awful = int(run["awful"])
+        handicapped = int(run["handicapped"])
+        silly = int(run["silly"])
+        highlight = int(run["highlight"])
+        wr = int(run["wr"])
+        tas = int(run["tas"])
+        dev_comm = int(run["dev_commentary"])
+        runs[r] = {
+            "game_id": game_id,
+            "run_game_key": game_key,
+            "category": category,
+            "race": race,
+            "event_id": event_id,
+            "year": year,
+            "start_time": start_time,
+            "duration": duration,
+            "awful": awful,
+            "handicapped": handicapped,
+            "silly": silly,
+            "highlight": highlight,
+            "wr": wr,
+            "tas": tas,
+            "dev_commentary": dev_comm
+        }
+        
+# for item in sorted(platforms):
+#     print(item)
 
-# for plat in platforms:
-#     print("INSERT INTO platforms (name) VALUES (\"{}\");".format(plat))
+# for genre in sorted(genres):
+#     print(genre)
 
-# for game in sorted(games.keys()):
-#    print("INSERT INTO games (name, platform_id) VALUES (\"{}\", {});".format(games[game]["name"], games[game]["platform"]))
+# for r in sorted(runners.keys()):
+#     print("INSERT INTO runners (name, display_name, twitch, twitter, youtube) VALUES (\"{}\", \"{}\", \"{}\", \"{}\", \"{}\");".format(r, runners[r]["name"], runners[r]["twitch"], runners[r]["twitter"], runners[r]["youtube"]))
 
+# for g in sorted(games.keys()):
+#     print("INSERT INTO games (name, display_name, platform, year, genre) VALUES (\"{}\", \"{}\", {}, {}, {});".format(g, games[g]["name"], db_platforms[games[g]["platform"]], int(games[g]["year"]), db_genres[games[g]["genre"]]))
 
-if len(runs) == len(runs_players):
-    for i in range(0, len(runs)):
-        print("INSERT INTO runs (id, game_id, platform_id, event, year, start_time, end_time, run_time) VALUES ({}, {}, {}, \"{}\", {}, \"{}Z\", \"{}Z\", {});".format(i+1, runs[i][0], runs[i][1], runs[i][2], runs[i][3], runs[i][4], runs[i][5], int(runs[i][6])))
-        for player in runs_players[i]:
-            print("INSERT INTO player_runs (run_id, player_id) VALUES ({}, {});".format(i+1, db_players[player.strip().lower()]))
+# for r in sorted(runs.keys()):
+#     run = runs[r]
+#     print("INSERT INTO runs (game_id, run_game_key, category, race, event_id, year, start_time, duration, awful, handicapped, silly, highlight, wr, tas, dev_commentary) VALUES ({}, \"{}\", \"{}\", {}, {}, {}, {}, \"{}\", {}, {}, {}, {}, {}, {}, {});".format(run["game_id"], run["run_game_key"], run["category"], run["race"], run["event_id"], run["year"], int(run["start_time"]), run["duration"], run["awful"], run["handicapped"], run["silly"], run["highlight"], run["wr"], run["tas"], run["dev_commentary"]))
 
-# print(max_id)
+for r in runs_runners:
+    print("INSERT INTO runs_runners (run_id, runner_id) VALUES ({}, {});".format(int(runs_runners[r]["run_id"]), int(runs_runners[r]["runner_id"])))
+    
