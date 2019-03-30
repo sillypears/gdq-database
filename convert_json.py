@@ -1,5 +1,7 @@
 #!python
 
+# Good luck trying to figure out what the hell you did here when you see this again in 3 months
+s
 import os
 import sys
 import json
@@ -159,6 +161,6 @@ for r in j_data:
 #     run = runs[r]
 #     print("INSERT INTO runs (game_id, run_game_key, category, race, event_id, year, start_time, duration, awful, handicapped, silly, highlight, wr, tas, dev_commentary) VALUES ({}, \"{}\", \"{}\", {}, {}, {}, {}, \"{}\", {}, {}, {}, {}, {}, {}, {});".format(run["game_id"], run["run_game_key"], run["category"], run["race"], run["event_id"], run["year"], int(run["start_time"]), run["duration"], run["awful"], run["handicapped"], run["silly"], run["highlight"], run["wr"], run["tas"], run["dev_commentary"]))
 
-for r in runs_runners:
-    print("INSERT INTO runs_runners (run_id, runner_id) VALUES ({}, {});".format(int(runs_runners[r]["run_id"]), int(runs_runners[r]["runner_id"])))
+# for r in runs_runners:
+#     print("INSERT INTO runs_runners (run_id, runner_id) VALUES ({}, {});".format(int(runs_runners[r]["run_id"]), int(runs_runners[r]["runner_id"])))
     
