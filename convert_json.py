@@ -1,7 +1,7 @@
 #!python
 
 # Good luck trying to figure out what the hell you did here when you see this again in 3 months
-s
+
 import os
 import sys
 import json
