@@ -5,10 +5,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var favicon = require('serve-favicon');
 
-var indexRouter = require('./routes/index');
-//var apiRouter = require('./routes/api');
-//var usersRouter = require('./routes/users');
-
+const indexRouter = require('./routes/index');
+const api = require('./routes/api');
 var app = express();
 
 // view engine setup
@@ -24,8 +22,9 @@ app.use(favicon(__dirname + '/public/images/favicon.ico'));
 
 
 app.use('/', indexRouter);
-//api.use('/api', apiRouter);
-//app.use('/users', usersRouter);
+app.get('/api', api.api);
+app.get('/api/:event', api.event);
+app.get('/api/:event/:year', api.eventyear);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

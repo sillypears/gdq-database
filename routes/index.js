@@ -1,39 +1,29 @@
 var express = require('express');
 var router = express.Router();
-var sqlite3 = require('sqlite3');
-
-
-db = new sqlite3.Database('./database.sqlite', sqlite3.OPEN_READONLY, (err) => {
-  if (err) {
-    return console.error("Couldn't open database: " + err.message);
-  }
-});
-
-let sql = "SELECT * FROM game_runs WHERE event = 'AGDQ' AND year = '2019'";
-dbdata = [];
-dbevents = [];
-
-db.all(sql, [], (err, rows) => {
-  if (err) {
-    throw err;
-  }
-  dbdata = rows;
-});
-
-sql = "SELECT DISTINCT event, year FROM runs ORDER BY year, event";
-dbdata = [];
-
-db.all(sql, [], (err, rows) => {
-  if (err) {
-    throw err;
-  }
-  dbevents = rows;
-});
-
-
+var db = require("../db.js");
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
+  let sql = "SELECT * FROM game_runs WHERE event = 'AGDQ' AND year = '2019'";
+  dbdata = [];
+  dbevents = [];
+
+  db.all(sql, [], (err, rows) => {
+    if (err) {
+      throw err;
+    }
+    dbdata = rows;
+  });
+
+  sql = "SELECT DISTINCT e.display_name, r.year FROM runs r LEFT JOIN events e ON r.event_id = e.id GROUP BY e.display_name, year ORDER BY year DESC";
+  dbdata = [];
+
+  db.all(sql, [], (err, rows) => {
+    if (err) {
+      throw err;
+    }
+    dbevents = rows;
+  });
   res.render(
     'index',
     {
@@ -43,45 +33,5 @@ router.get('/', function (req, res, next) {
     }
   );
 });
-
-var homeJson = { 'api' : 'Homepage'};
-
-router.get('/api', function (req, res, next) {
-  res.json(homeJson);
-});
-
-
-router.get('/api/:event/:year', function (req, res, next) {
-  let eventsql = "SELECT * FROM game_runs WHERE event = '" + req.params.event + "' AND year = '" + req.params.year + "'";
-  var params = { 1: req.params.event, 2: req.params.year};
-
-  db.all(eventsql, [], (err, rows) => {
-    if (err) {
-      throw err;
-    
-    }
-    if (rows.length > 0) {
-      res.json(rows);
-    } else {
-      res.json({
-        'error': {
-          'status_code': 2,
-          'message': 'No data found'
-        }
-      });
-    }
-  });
-
-  
-});
-  
-
-// db.close((err) => {
-//   if (err) {
-//     return console.error(err.message);
-//   }
-//   console.log('Close the database connection.');
-// });
-
 
 module.exports = router;
