@@ -7,6 +7,8 @@ var favicon = require('serve-favicon');
 
 const indexRouter = require('./routes/index');
 const api = require('./routes/api');
+const edit_runner = require('./routes/edit_runner');
+const add_runner = require('./routes/add_runner');
 var app = express();
 
 // view engine setup
@@ -25,6 +27,8 @@ app.use('/', indexRouter);
 app.get('/api', api.api);
 app.get('/api/:event', api.event);
 app.get('/api/:event/:year', api.eventyear);
+app.get('/edit_runner', edit_runner.edit);
+app.get('/add_runner/', add_runner.add);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

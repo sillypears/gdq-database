@@ -1,0 +1,20 @@
+extends layout
+
+block content
+
+    div.form-group
+        label(for="sel_runners") Runners:
+        select.form-control.selectpicker#sel_runners(data-live-search="true")
+            option(value="-1", data-name="", data-twitch="", data-twitter="", data-youtube="", disabled, selected) -- Select Runner --
+            for runner in runners
+                option(value=runner.id, data-name=runner.name, data-display_name=runner.display_name, data-twitch=runner.twitch, data-twitter=runner.twitter, data-youtube=runner.youtube) #{runner.display_name}
+        label(for="name") Name:
+        input.form-control#name(type="text", name="Name")
+        label(for="display_name") Display Name:
+        input.form-control#display_name(type="text", name="Display Name")
+        label(for="twitch") Twitch:
+        input.form-control#twitch(type="text", name="twitch")
+        label(for="twitter") Twitter:
+        input.form-control#twitter(type="text", name="twitter")
+        label(for="youtube") Youtube:
+        input.form-control#youtube(type="text", name="youtube")

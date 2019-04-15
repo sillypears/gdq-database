@@ -28,6 +28,7 @@ router.get('/', function (req, res, next) {
     'index',
     {
       title: 'GDQ Database Querier',
+      nav_name: "index",
       dbdata: dbdata,
       dbevents: dbevents
     }

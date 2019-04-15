@@ -1,0 +1,17 @@
+extends layout
+
+block content
+    header
+        div.h2 Add A New Runner
+    div.form-group
+        input.form-control#name(type="text", name="name", placeholder="Name", required)
+        p
+        input.form-control#display_name(type="text", name="Display Name", placeholder="Display Name", required)
+        p
+        input.form-control#twitter(type="text", name="Twitter", placeholder="Twitter handle")
+        p
+        input.form-control#twitch(type="text", name="Twitch", placeholder="Twitch channel")
+        p
+        input.form-control#youtube(type="text", name="youtube", placeholder="Youtube channel")
+        p
+        button.form-control.btn.btn-success(type="submit", action="add_runner", method="post") Add Runner
